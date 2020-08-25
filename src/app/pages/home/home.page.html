@@ -8,14 +8,75 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">Home</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Home</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-card *ngIf="dish">
+
+        <ion-img [src]="BaseURL + dish .image" [alt]="dish .name"></ion-img>
+        <ion-card-header>
+            <ion-card-title>{{ dish .name | uppercase }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            {{ dish .description }}
+        </ion-card-content>
+
+        <div [hidden]="dish || dishErrorMessage">
+            <ion-spinner name="crescent"></ion-spinner>
+            <h4>Loading...</h4>
+        </div>
+        <div *ngIf="dishErrorMessage">
+            <h2>Error</h2>
+            <h4>{{ dishErrorMessage }}</h4>
+        </div>
+
+    </ion-card>
+
+    <ion-card *ngIf="promotion">
+
+        <ion-img [src]="BaseURL + promotion .image" [alt]="promotion .name"></ion-img>
+        <ion-card-header>
+            <ion-card-title>{{ promotion .name | uppercase }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            {{ promotion .description }}
+        </ion-card-content>
+
+        <div [hidden]="promotion || promotionErrorMessage">
+            <ion-spinner name="crescent"></ion-spinner>
+            <h4>Loading...</h4>
+        </div>
+        <div *ngIf="promotionErrorMessage">
+            <h2>Error</h2>
+            <h4>{{ promotionErrorMessage }}</h4>
+        </div>
+
+    </ion-card>
+
+    <ion-card *ngIf="leader">
+    
+        <ion-img [src]="BaseURL + leader .image" [alt]="leader .name"></ion-img>
+        <ion-card-header>
+            <ion-card-title>{{ leader .name | uppercase }}</ion-card-title>
+            <ion-card-subtitle>{{ leader .designation | uppercase }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            {{ leader .description }}
+        </ion-card-content>
+
+        <div [hidden]="leader || leaderErrorMessage">
+            <ion-spinner name="crescent"></ion-spinner>
+            <h4>Loading...</h4>
+        </div>
+        <div *ngIf="leaderErrorMessage">
+            <h2>Error</h2>
+            <h4>{{ leaderErrorMessage }}</h4>
+        </div>
+
+    </ion-card>
+
 </ion-content>
