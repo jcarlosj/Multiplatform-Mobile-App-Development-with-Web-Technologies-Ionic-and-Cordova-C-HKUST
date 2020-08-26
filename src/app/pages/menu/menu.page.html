@@ -8,14 +8,32 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">Menu</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Menu</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div *ngIf="dishes">
+
+      <ion-card *ngFor="let dish of dishes">
+
+        <ion-img [src]="BaseURL + dish .image" [alt]="dish .name"></ion-img>
+        <ion-card-header>
+            <ion-card-title>{{ dish .name }}</ion-card-title>
+            <ion-card-subtitle>{{ dish .description }}</ion-card-subtitle>
+        </ion-card-header>
+
+    </ion-card>
+    </div>
+    <div class="spinner-message" [hidden]="dishes || errorMessage">
+        <ion-spinner name="crescent"></ion-spinner>
+        <h4>Loading...</h4>
+    </div>
+    <div class="error-message" *ngIf="errorMessage">
+        <h2>Error</h2>
+        <h4>{{ errorMessage }}</h4>
+    </div>
+
 </ion-content>
