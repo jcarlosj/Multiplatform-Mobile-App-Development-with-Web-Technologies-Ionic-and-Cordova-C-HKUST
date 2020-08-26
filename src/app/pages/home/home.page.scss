@@ -26,3 +26,14 @@ ion-menu-button {
   #container a {
     text-decoration: none;
   }
+
+.error-message,
+.spinner-message { 
+    h2, h4 {
+        text-align: center;
+    }
+    ion-spinner {
+        margin: 0 auto;
+        text-align: center;
+    }
+}

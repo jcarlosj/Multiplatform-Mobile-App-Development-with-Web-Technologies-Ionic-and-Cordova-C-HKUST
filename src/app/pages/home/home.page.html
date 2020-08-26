@@ -25,16 +25,15 @@
             {{ dish .description }}
         </ion-card-content>
 
-        <div [hidden]="dish || dishErrorMessage">
-            <ion-spinner name="crescent"></ion-spinner>
-            <h4>Loading...</h4>
-        </div>
-        <div *ngIf="dishErrorMessage">
-            <h2>Error</h2>
-            <h4>{{ dishErrorMessage }}</h4>
-        </div>
-
     </ion-card>
+    <div class="spinner-message" [hidden]="dish || dishErrorMessage">
+        <ion-spinner name="crescent"></ion-spinner>
+        <h4>Loading...</h4>
+    </div>
+    <div class="error-message" *ngIf="dishErrorMessage">
+        <h2>Error</h2>
+        <h4>{{ dishErrorMessage }}</h4>
+    </div>
 
     <ion-card *ngIf="promotion">
 
@@ -46,16 +45,15 @@
             {{ promotion .description }}
         </ion-card-content>
 
-        <div [hidden]="promotion || promotionErrorMessage">
-            <ion-spinner name="crescent"></ion-spinner>
-            <h4>Loading...</h4>
-        </div>
-        <div *ngIf="promotionErrorMessage">
-            <h2>Error</h2>
-            <h4>{{ promotionErrorMessage }}</h4>
-        </div>
-
     </ion-card>
+    <div class="spinner-message" [hidden]="promotion || promotionErrorMessage">
+        <ion-spinner name="crescent"></ion-spinner>
+        <h4>Loading...</h4>
+    </div>
+    <div class="error-message" *ngIf="promotionErrorMessage">
+        <h2>Error</h2>
+        <h4>{{ promotionErrorMessage }}</h4>
+    </div>
 
     <ion-card *ngIf="leader">
     
@@ -68,15 +66,14 @@
             {{ leader .description }}
         </ion-card-content>
 
-        <div [hidden]="leader || leaderErrorMessage">
-            <ion-spinner name="crescent"></ion-spinner>
-            <h4>Loading...</h4>
-        </div>
-        <div *ngIf="leaderErrorMessage">
-            <h2>Error</h2>
-            <h4>{{ leaderErrorMessage }}</h4>
-        </div>
-
     </ion-card>
+    <div class="spinner-message" [hidden]="leader || leaderErrorMessage">
+        <ion-spinner name="crescent"></ion-spinner>
+        <h4>Loading...</h4>
+    </div>
+    <div class="error-message" *ngIf="leaderErrorMessage">
+        <h2>Error</h2>
+        <h4>{{ leaderErrorMessage }}</h4>
+    </div>
 
 </ion-content>
