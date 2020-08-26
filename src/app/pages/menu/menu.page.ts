@@ -1,4 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Router } from '@angular/router';
+
+/** Page Components */
+import { DishDetailPage } from '../dish-detail/dish-detail.page';
+
+/** Models */
+import { Dish } from '../../shared/interfaces/Dish';
+
+/** Service */
+import { DishService } from '../../services/dish.service';
 
 @Component({
   selector: 'app-menu',
@@ -6,10 +16,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu.page.scss'],
 })
 export class MenuPage implements OnInit {
+    /** Atributes */
+    dishes: Dish[];
+    errorMessage: string;
 
-  constructor() { }
+    constructor(
+        private router: Router,
+        private dishService: DishService,
+        @Inject( 'BaseURL' ) private BaseURL
+    ) { 
+        console .log( 'BaseURL', this .BaseURL );
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        /** Receive a Observable */
+        this .dishService .getDishes()
+             .subscribe(    // Subscription to the Observable receives two callbacks, the data obtained, the error messages
+                  dishes => this .dishes = dishes,
+                  error => this .errorMessage = <any>error
+              );
+    }
 
 }
