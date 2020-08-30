@@ -17,7 +17,7 @@
 
     <div *ngIf="dishes">
 
-      <ion-card *ngFor="let dish of dishes">
+      <ion-card *ngFor="let dish of dishes" (click)="dishSelected( $event, dish )">
 
         <ion-img [src]="BaseURL + dish .image" [alt]="dish .name"></ion-img>
         <ion-card-header>

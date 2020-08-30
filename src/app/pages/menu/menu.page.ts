@@ -1,9 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-/** Page Components */
-import { DishDetailPage } from '../dish-detail/dish-detail.page';
-
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
 
@@ -35,6 +32,12 @@ export class MenuPage implements OnInit {
                   dishes => this .dishes = dishes,
                   error => this .errorMessage = <any>error
               );
+    }
+
+    dishSelected( event, dish: Dish ) {
+        console .log( 'dishSelected', dish );
+
+        this .router .navigate( [ '/dish-detail' ], { queryParams: dish } );
     }
 
 }
