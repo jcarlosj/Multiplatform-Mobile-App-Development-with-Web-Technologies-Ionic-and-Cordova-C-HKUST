@@ -8,14 +8,53 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">About Us</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">About Us</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <ion-card>
+
+        <ion-card-header>
+            <ion-card-title>Our History</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
+            <p>The restaurant traces its humble beginnings to The Frying Pan, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
+        </ion-card-content>
+
+    </ion-card>
+
+    <ion-card>
+
+        <ion-card-header>
+            <ion-card-title>Corportate Leadership</ion-card-title>
+        </ion-card-header>
+        
+        <ion-card-content>
+
+            <ion-list>
+
+                <ion-item *ngFor="let leader of leaders">
+                    <ion-avatar slot="start">
+                        <img [src]="BaseURL + leader .image" [alt]="leader .name">
+                    </ion-avatar>
+                    <ion-label>
+                        <h2>{{ leader .name }}</h2>
+                        <h3>{{ leader .designation }}</h3>
+                        <p>{{ leader .description }}</p>
+                    </ion-label>
+                </ion-item>
+
+            </ion-list>
+            <div class="spinner-message" [hidden]="leaders || leadersErrorMessage">
+                <ion-spinner name="crescent"></ion-spinner>
+                <h4>Loading...</h4>
+            </div>
+            <div class="error-message" *ngIf="leadersErrorMessage">
+                <h2>Error</h2>
+                <h4>{{ leadersErrorMessage }}</h4>
+            </div>
+
+        </ion-card-content>
+
+    </ion-card>
+
 </ion-content>

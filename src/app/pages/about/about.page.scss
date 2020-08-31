@@ -26,3 +26,18 @@ ion-menu-button {
   #container a {
     text-decoration: none;
   }
+
+ion-card-content {
+    ion-row {
+        ion-col:nth-child( 2 ) {
+            padding-left: .6rem;
+
+            h2 {
+              font-weight: 900;
+            }
+            h4 {
+                font-weight: 700;
+            }
+        }
+    }
+}
