@@ -22,7 +22,10 @@ export class DishDetailPage implements OnInit {
         
         this .activatedRoute .queryParams 
               .pipe(
-                  map( ( dish: Dish ) => dish )
+                  map( ( data ) => {                              // Dish Object String
+                      console. log( 'String', data );
+                      return JSON .parse( data .dish );           // Convert String to Object
+                  })
               )
               .subscribe( ( dish: Dish )  => {
                     console .log( 'DishDetailPage', dish );       // Dish Object Data

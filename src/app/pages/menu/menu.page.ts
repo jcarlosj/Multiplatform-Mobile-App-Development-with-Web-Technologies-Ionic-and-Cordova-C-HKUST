@@ -35,9 +35,10 @@ export class MenuPage implements OnInit {
     }
 
     dishSelected( event, dish: Dish ) {
+        const dishObjectString = JSON .stringify( dish );       // Convert Object to String
+        
         console .log( 'dishSelected', dish );
-
-        this .router .navigate( [ '/dish-detail' ], { queryParams: dish } );
+        this .router .navigate( [ '/dish-detail' ], { queryParams: { dish: dishObjectString } } );
     }
 
 }
