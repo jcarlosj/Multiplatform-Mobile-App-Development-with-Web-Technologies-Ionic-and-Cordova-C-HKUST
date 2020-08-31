@@ -13,6 +13,11 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./dish-detail.page.scss'],
 })
 export class DishDetailPage implements OnInit {
+    /** Atributes */
+    dish: Dish;
+    errorMessage: string;
+    avgStars: string;
+    numComments: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -28,11 +33,17 @@ export class DishDetailPage implements OnInit {
                   })
               )
               .subscribe( ( dish: Dish )  => {
-                    console .log( 'DishDetailPage', dish );       // Dish Object Data
-              });
+                    this .dish = dish;                            // Dish Object Data
+              });       
     }
 
     ngOnInit() {
+        let total = 0;
+
+        this .dish .comments .forEach( comment => total += comment .rating );   //  Add the total rating per dish comment 
+        this .numComments = this .dish .comments .length;                       //  Count number of total comments of the dish
+        this .avgStars = ( total / this .numComments ) .toFixed( 2 );           //  Calculate the average rating of the dish
+        console .log( 'DishDetailPage', this .dish );
     }
 
 }
