@@ -8,14 +8,39 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Contact Us</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  
+    <ion-card>
 
-  <div id="container">
-    <strong class="capitalize">Contact Us</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+        <ion-card-header>
+            <ion-card-title>Local Information</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>121, Clear Water Bay Road</p>
+            <p>Clear Water Bay, Kowloon</p>
+            <p>HONG KONG</p>
+            <p><ion-icon name="call"></ion-icon> +852 1234 5678</p>
+            <p><ion-icon name="print"></ion-icon> +852 1234 5678</p>
+            <p><ion-icon name="mail"></ion-icon> confusion@food.net</p>
+        </ion-card-content>
+
+        <ion-footer>
+            <ion-row>
+                <ion-col center text-center>
+                    <ion-button expand="block" size="default" color="light">
+                        <ion-icon name="call"></ion-icon> 
+                        Call
+                    </ion-button>
+                </ion-col>
+                <ion-col center text-center>
+                    <ion-button expand="block" size="default" color="light">
+                        <ion-icon name="mail"></ion-icon> 
+                        Email
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-footer>
+
+    </ion-card>
+    
 </ion-content>
