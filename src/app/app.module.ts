@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 /** Services */
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
+import { FavoriteService } from './services/favorite.service';
 import { ProcessHttpMessageService } from './services/process-http-message.service';
 
 /** Base URL - BackEnd Server (It is a recommended practice) */
@@ -31,6 +32,7 @@ import { BASE_URL } from './shared/baseurl';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     DishService,
     LeaderService,
+    FavoriteService,
     ProcessHttpMessageService,
     {
         provide: 'BaseURL',
