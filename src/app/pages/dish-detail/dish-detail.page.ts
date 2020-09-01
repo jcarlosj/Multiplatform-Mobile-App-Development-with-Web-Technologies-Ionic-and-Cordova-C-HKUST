@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
 
+/** Services */
+import { FavoriteService } from '../../services/favorite.service';
+
 /** ReactiveX Library */
 import { map } from 'rxjs/operators';
 
@@ -18,9 +21,11 @@ export class DishDetailPage implements OnInit {
     errorMessage: string;
     avgStars: string;
     numComments: number;
+    favorite: boolean;
 
     constructor(
         private activatedRoute: ActivatedRoute,
+        private favoriteService: FavoriteService,
         @Inject( 'BaseURL' ) public BaseURL            // Mechanism for letting Angular know that a parameter must be injected
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -43,7 +48,13 @@ export class DishDetailPage implements OnInit {
         this .dish .comments .forEach( comment => total += comment .rating );   //  Add the total rating per dish comment 
         this .numComments = this .dish .comments .length;                       //  Count number of total comments of the dish
         this .avgStars = ( total / this .numComments ) .toFixed( 2 );           //  Calculate the average rating of the dish
+        this .favorite = this .favoriteService .isFavorite( this .dish .id );   //  Assign a true or false value if the dish has been added as a favorite
         console .log( 'DishDetailPage', this .dish );
+    }
+
+    addToFavorites() {
+        console .log( 'Adding to Favorites', this .dish .id );
+        this .favorite = this .favoriteService .addFavorite( this .dish .id );
     }
 
 }
