@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 /** Services */
 import { DishService } from '../../services/dish.service';
+import { FavoriteService } from '../../services/favorite.service';
 import { ProcessHttpMessageService } from '../../services/process-http-message.service';
 
 /** Router */
@@ -29,6 +30,7 @@ import { BASE_URL } from '../../shared/baseurl';
   declarations: [MenuPage],
   providers: [
     DishService,
+    FavoriteService,
     ProcessHttpMessageService,
     {
         provide: 'BaseURL',

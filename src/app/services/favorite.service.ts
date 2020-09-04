@@ -8,22 +8,34 @@ import { Dish } from '../shared/interfaces/Dish';
 import { DishService } from '../services/dish.service';
 
 /** ReactiveX Library */
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+/** Static Data */
+import { FAVORITES } from '../shared/data/favorites';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoriteService {
     /** Atributes */
-    favorites: Array<number>;
+    favorites: Array<any>;
 
     constructor(
         private http: HttpClient,
         private dishService: DishService
     ) { 
-        this .favorites = [];
-        console .log( 'Hello FavoriteService Service' );
+        this .getIdsFavoriteDishes() 
+            .subscribe( data => {
+                this .favorites = data;
+            });
+
+        console .log( 'Hello FavoriteService Service', this .favorites );
+    }
+
+    /** Get IDs of favorite dishes */
+    getIdsFavoriteDishes(): Observable< number[] > {
+        return of( FAVORITES );     // Create an Observable: Converts the arguments to an observable sequence.
     }
 
     /** Add a Favorite Dish */
@@ -31,7 +43,7 @@ export class FavoriteService {
         if( ! this .isFavorite( id ) ) {
             this .favorites .push( id );
         }
-        console .log( 'favorites', this .favorites );
+        console .log( 'addFavorite', this .favorites );
 
         return true;
     }
@@ -42,11 +54,11 @@ export class FavoriteService {
     }
 
     /** Gets all the favorite dishes */
-    getFavorites(): Observable< Dish[] > {
-        return this .dishService .getDishes()   //  Get all registered dishes
-                    .pipe(
-                        map( dishes => dishes .filter( dish => this .favorites .some( indexValue => indexValue === dish .id ) ) )   //  Map each registered dish and filter the first one that has an id included in the list of favorite dishes
-                    );
+    getFavorites() {
+        return this .dishService .getDishes()
+                .pipe(
+                    map( dishes => dishes .filter( dish => this .isFavorite( dish .id ) ) )     //  Map each registered dish and filter the first one that has an id included in the list of favorite dishes
+                );
     }
 
     /** Remove an ID from the list of favorite dishes */

@@ -6,6 +6,7 @@ import { Dish } from '../../shared/interfaces/Dish';
 
 /** Service */
 import { DishService } from '../../services/dish.service';
+import { FavoriteService } from '../../services/favorite.service';
 
 @Component({
   selector: 'app-menu',
@@ -20,6 +21,7 @@ export class MenuPage implements OnInit {
     constructor(
         private router: Router,
         private dishService: DishService,
+        private favoriteService: FavoriteService,
         @Inject( 'BaseURL' ) private BaseURL
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -39,6 +41,11 @@ export class MenuPage implements OnInit {
         
         console .log( 'dishSelected', dish );
         this .router .navigate( [ '/dish-detail' ], { queryParams: { dish: dishObjectString } } );
+    }
+
+    addToFavorites( dish: Dish ) {
+        console .log( 'addToFavorites', dish .id );
+        this .favoriteService .addFavorite( dish .id );
     }
 
 }
