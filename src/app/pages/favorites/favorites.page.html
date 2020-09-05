@@ -28,8 +28,12 @@
             </ion-item>
             <ion-item-options>
                 <ion-item-option (click)="deleteFavorite( favoriteDish .id )">
-                    <ion-icon slot="start" name="delete"></ion-icon>
+                    <ion-icon slot="start" name="close-circle-outline"></ion-icon>
                     Delete
+                </ion-item-option>
+                <ion-item-option color="secondary" (click)="dishSelected( $event, favoriteDish )">
+                    <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+                    Info
                 </ion-item-option>
             </ion-item-options>
         </ion-item-sliding>

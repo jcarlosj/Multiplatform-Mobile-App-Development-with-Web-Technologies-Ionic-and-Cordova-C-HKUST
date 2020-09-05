@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
@@ -17,6 +18,7 @@ export class FavoritesPage implements OnInit {
     errorMessage: string;
 
     constructor(
+        private router: Router,
         private favoriteService: FavoriteService,
         @Inject( 'BaseURL' ) private BaseURL
     ) { 
@@ -43,6 +45,13 @@ export class FavoritesPage implements OnInit {
                     favorites => this .favorites = favorites,
                     error => this .errorMessage = error 
                 );
+    }
+
+    dishSelected( event, dish: Dish ) {
+        const dishObjectString = JSON .stringify( dish );       // Convert Object to String
+        
+        console .log( 'dishSelected', dish );
+        this .router .navigate( [ '/dish-detail' ], { queryParams: { dish: dishObjectString } } );
     }
 
 }
