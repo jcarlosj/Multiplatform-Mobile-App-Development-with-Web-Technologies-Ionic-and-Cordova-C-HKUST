@@ -21,7 +21,7 @@ export class MenuPage implements OnInit, DoCheck {
     hasDishes: boolean = false;
 
     @ViewChildren( IonCard, { read: ElementRef } ) ionCards: QueryList< ElementRef >;
-    longPressActive: boolean = false;
+    favorite: boolean;
     
     constructor(
         private router: Router,
@@ -65,8 +65,13 @@ export class MenuPage implements OnInit, DoCheck {
 
     useGestures( cardArray ) {
         for( let i = 0; i < cardArray .length; i++ ) {
-            let card = cardArray[ i ];
-            //console .log( 'card', card );
+            let 
+                card = cardArray[ i ],
+                elCard = card .nativeElement,
+                dishId: number = parseInt( elCard .getAttribute( 'data-dish-id' ) );
+            
+            // console .log( 'card', card. nativeElement );
+            // console .log( 'Dish ID', dishId );
 
             const gesture: Gesture = this .gestureCtrl .create({
                 el: card .nativeElement,
@@ -95,7 +100,6 @@ export class MenuPage implements OnInit, DoCheck {
                     );
                 },
                 onEnd: ev => {
-                    //this .longPressActive = false;
                     console .log( 'onEnd', ev );
 
                     // Implement this callback to set a CSS style for an element in the DOM.
@@ -105,26 +109,28 @@ export class MenuPage implements OnInit, DoCheck {
                         '0.4s ease-out' 
                     );
 
-                    if( ev .deltaX > 125 ) {            //  If the movement exceeds 125px, the element moves until it disappears on the right
+                    if( ev .deltaX > 35 ) {            //  If the movement exceeds 35px, it has been moved to the right and removes dish from favorites
                         console .log( 'Right!' );
-
                         // Implement this callback to set a CSS style for an element in the DOM.
                         this .renderer .setStyle(      
                             card .nativeElement, 
                             'transform', 
-                            `translateX( 400px )`
+                            `translateX( 10px )`
                         );
-                    } else if( ev .deltaX < -125 ) {    //  If the movement exceeds -125px, the element moves until it disappears to the left
+                        this .removeFromFavorites( dishId );
+
+                    } else if( ev .deltaX < -35 ) {    //  If the move exceeds -35px, it has been moved to the left and adds plate to favorites
                         console .log( 'Left!' );
-
                         // Implement this callback to set a CSS style for an element in the DOM.
                         this .renderer .setStyle(      
                             card .nativeElement, 
                             'transform', 
-                            `translateX( -400px )`
+                            `translateX( -10px )`
                         );
+                        this .addToFavorites( dishId );
+                        
                     } else {
-                        console .log( 'Original!' );
+                        console .log( 'Original!', dishId );
 
                         // Implement this callback to set a CSS style for an element in the DOM.
                         this .renderer .setStyle(      
@@ -142,16 +148,21 @@ export class MenuPage implements OnInit, DoCheck {
         }
     }
 
+    addToFavorites( id: number ) {
+        console .log( 'Adding to Favorites', id );
+        this .favoriteService .addFavorite( id );
+    }
+
+    removeFromFavorites( id: number ) {
+        console .log( 'Removing from Favorites', id );
+        this .favoriteService .deleteFavorite( id );
+    }
+
     dishSelected( event, dish: Dish ) {
         const dishObjectString = JSON .stringify( dish );       // Convert Object to String
         
         console .log( 'dishSelected', dish );
         this .router .navigate( [ '/dish-detail' ], { queryParams: { dish: dishObjectString } } );
-    }
-
-    addToFavorites( dish: Dish ) {
-        console .log( 'addToFavorites', dish .id );
-        this .favoriteService .addFavorite( dish .id );
     }
 
 }

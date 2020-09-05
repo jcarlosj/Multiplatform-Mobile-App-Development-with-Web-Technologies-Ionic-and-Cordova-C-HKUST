@@ -19,12 +19,15 @@ import { FAVORITES } from '../shared/data/favorites';
 })
 export class FavoriteService {
     /** Atributes */
-    favorites: Array<any>;
+    favorites: Array<any> = null;
 
     constructor(
         private http: HttpClient,
         private dishService: DishService
     ) { 
+        console .log( 'Hello FavoriteService Service', this .favorites );
+        
+
         this .getIdsFavoriteDishes() 
             .subscribe( data => {
                 this .favorites = data;
