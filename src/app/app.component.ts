@@ -27,10 +27,15 @@ export class AppComponent implements OnInit {
       url: '/menu',
       icon: 'list'
     },
-        {
+    {
       title: 'Favorites',
       url: '/favorites',
       icon: 'heart'
+    },
+    {
+      title: 'Reservation',
+      url: '/reservation',
+      icon: 'calendar'
     },
     {
       title: 'Contact Us',
