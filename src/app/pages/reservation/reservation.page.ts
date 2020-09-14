@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ModalController } from '@ionic/angular';
+
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.page.html',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReservationPage implements OnInit {
 
-  constructor() { }
+    constructor(
+        private modalController: ModalController
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+
+    dismissModal() {
+        this .modalController .dismiss();
+    }
 
 }

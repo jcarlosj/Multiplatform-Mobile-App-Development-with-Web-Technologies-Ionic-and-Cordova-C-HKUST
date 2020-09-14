@@ -7,10 +7,16 @@
           <ion-note>Ristorante con Fusion</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+            <ion-item *ngIf="p.type !== 'modal'; else elseModal;" (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
+                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
             </ion-item>
+            <ng-template #elseModal>
+                <ion-item (click)="openModalReservation()" class="modal">
+                    <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                    <ion-label>{{ p.title }}</ion-label>
+                  </ion-item>
+            </ng-template>
           </ion-menu-toggle>
         </ion-list>
 

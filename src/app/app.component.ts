@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+/** Components */
+import { ReservationPage } from './pages/reservation/reservation.page';
 
 @Component({
   selector: 'app-root',
@@ -15,39 +18,46 @@ export class AppComponent implements OnInit {
     {
       title: 'Home',
       url: '/home',
-      icon: 'home'
+      icon: 'home',
+      type: 'page'
     },
     {
       title: 'About Us',
       url: '/about',
-      icon: 'information-circle'
+      icon: 'information-circle',
+      type: 'page'
     },
     {
       title: 'Menu',
       url: '/menu',
-      icon: 'list'
+      icon: 'list',
+      type: 'page'
     },
     {
       title: 'Favorites',
       url: '/favorites',
-      icon: 'heart'
+      icon: 'heart',
+      type: 'page'
     },
     {
       title: 'Reservation',
-      url: '/reservation',
-      icon: 'calendar'
+      url: 'modal-reservation',
+      icon: 'calendar',
+      type: 'modal'
     },
     {
       title: 'Contact Us',
       url: '/contact',
-      icon: 'mail'
+      icon: 'mail',
+      type: 'page'
     },
   ];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private modalController: ModalController
   ) {
     this.initializeApp();
   }
@@ -61,9 +71,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const path = window.location.pathname;
+
     console .log( 'path', path );
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+
+    if ( path !== undefined) {
+        this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+    
   }
+
+    async openModalReservation() {
+        console .log( 'openModalReservation' );
+
+        const modal = await this .modalController .create({
+            component: ReservationPage
+        });
+
+        await modal .present();
+    }
 }
