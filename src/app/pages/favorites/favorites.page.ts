@@ -51,14 +51,7 @@ export class FavoritesPage implements OnInit {
             duration: 2000
         });
 
-        await loading.present();
-
-        /** Using the Service to remove a dish from the favorites list */
-        this .favoriteService .deleteFavorite (id )
-                .subscribe( 
-                    favorites => this .favorites = favorites,
-                    error => this .errorMessage = error 
-                );
+        await loading .present();
 
         /** Define Toast */
         const toast = await this .toastController .create({
@@ -66,7 +59,20 @@ export class FavoritesPage implements OnInit {
             duration: 3000
         });
 
-        toast .present();
+        /** Using the Service to remove a dish from the favorites list */
+        this .favoriteService .deleteFavorite( id )
+                .subscribe( 
+                    favorites => {
+                        this .favorites = favorites;
+                        loading .dismiss();
+                        toast .present();
+                    },
+                    error => {
+                        this .errorMessage = error;
+                        loading .dismiss();
+                    } 
+                );
+
     }
 
     dishSelected( event, dish: Dish ) {
