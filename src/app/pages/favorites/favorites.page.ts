@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ToastController } from '@ionic/angular';
+import { ToastController, LoadingController  } from '@ionic/angular';
 
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
@@ -22,7 +22,8 @@ export class FavoritesPage implements OnInit {
     constructor(
         private router: Router,
         private favoriteService: FavoriteService,
-        public toastController: ToastController,        
+        public toastController: ToastController,   
+        public loadingController: LoadingController,     
         @Inject( 'BaseURL' ) private BaseURL
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -43,6 +44,16 @@ export class FavoritesPage implements OnInit {
     async deleteFavorite( id: number ) {
         console .log( 'deleteFavorite', id );
 
+        /** Define Loading */
+        const loading = await this .loadingController .create({
+            cssClass: 'ion-loading-delete-favorite',
+            message: 'Deleting...',
+            duration: 2000
+        });
+
+        await loading.present();
+
+        /** Using the Service to remove a dish from the favorites list */
         this .favoriteService .deleteFavorite (id )
                 .subscribe( 
                     favorites => this .favorites = favorites,
