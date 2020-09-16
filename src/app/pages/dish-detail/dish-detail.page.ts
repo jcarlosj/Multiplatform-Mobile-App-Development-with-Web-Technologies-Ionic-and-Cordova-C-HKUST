@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { ToastController } from '@ionic/angular';
+
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
 
@@ -26,6 +28,7 @@ export class DishDetailPage implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private favoriteService: FavoriteService,
+        public toastController: ToastController,
         @Inject( 'BaseURL' ) public BaseURL            // Mechanism for letting Angular know that a parameter must be injected
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -52,9 +55,18 @@ export class DishDetailPage implements OnInit {
         console .log( 'DishDetailPage', this .dish );
     }
 
-    addToFavorites() {
+    async addToFavorites() {
         console .log( 'Adding to Favorites', this .dish .id );
         this .favorite = this .favoriteService .addFavorite( this .dish .id );
+
+        /** Define Toast */
+        const toast = await this .toastController .create({
+            message: `Dish ${ this .dish .id } added as favorite successfully`,
+            position: 'middle',
+            duration: 3000
+        });
+
+        toast .present();
     }
 
 }

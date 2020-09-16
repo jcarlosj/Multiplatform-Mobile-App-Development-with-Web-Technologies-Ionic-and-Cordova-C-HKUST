@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, DoCheck, ViewChildren, ElementRef, QueryList, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Gesture, GestureController, IonCard } from '@ionic/angular';
+
+import { Gesture, GestureController, IonCard, ToastController } from '@ionic/angular';
 
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
@@ -29,6 +30,7 @@ export class MenuPage implements OnInit, DoCheck {
         private favoriteService: FavoriteService,
         @Inject( 'BaseURL' ) private BaseURL,
         private gestureCtrl: GestureController,
+        public toastController: ToastController, 
         public renderer: Renderer2
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -148,9 +150,17 @@ export class MenuPage implements OnInit, DoCheck {
         }
     }
 
-    addToFavorites( id: number ) {
+    async addToFavorites( id: number ) {
         console .log( 'Adding to Favorites', id );
         this .favoriteService .addFavorite( id );
+
+        /** Define Toast */
+        const toast = await this .toastController .create({
+            message: `Dish ${ id } added as favorite successfully`,
+            duration: 3000
+        });
+
+        toast .present();
     }
 
     removeFromFavorites( id: number ) {
