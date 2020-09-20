@@ -1,7 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ToastController, ActionSheetController  } from '@ionic/angular';
+import { ToastController, ActionSheetController, ModalController } from '@ionic/angular';
+
+/** Components */
+import { CommentPage } from '../comment/comment.page';
 
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
@@ -30,6 +33,7 @@ export class DishDetailPage implements OnInit {
         private favoriteService: FavoriteService,
         public toastController: ToastController,
         public actionSheetController: ActionSheetController,
+        private modalController: ModalController,
         @Inject( 'BaseURL' ) public BaseURL            // Mechanism for letting Angular know that a parameter must be injected
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -79,7 +83,7 @@ export class DishDetailPage implements OnInit {
                     text: 'Add to Favorites',
                     icon: 'heart',
                     handler: () => {
-                        console .log( 'Play clicked' );
+                        console .log( 'Add to Favorites' );
                         this .addToFavorites();
                     }
                 }, 
@@ -87,7 +91,8 @@ export class DishDetailPage implements OnInit {
                     text: 'Add Comment',
                     icon: 'chatbox-ellipses-outline',
                     handler: () => {
-                        console .log( 'Favorite clicked' );
+                        console .log( 'Add Comment' );
+                        this .openModalComment();
                     }
                 }, 
                 {
@@ -103,6 +108,16 @@ export class DishDetailPage implements OnInit {
 
         await actionSheet .present();
 
+    }
+
+    async openModalComment() {
+        console .log( 'openModalComment' );
+
+        const modal = await this .modalController .create({
+            component: CommentPage
+        });
+
+        await modal .present();
     }
 
 }
