@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'reservation',
     loadChildren: () => import('./pages/reservation/reservation.module').then( m => m.ReservationPageModule)
+  },
+  {
+    path: 'comment',
+    loadChildren: () => import('./pages/comment/comment.module').then( m => m.CommentPageModule)
   }
 ];
 
