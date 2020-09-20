@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ToastController } from '@ionic/angular';
+import { ToastController, ActionSheetController  } from '@ionic/angular';
 
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
@@ -29,6 +29,7 @@ export class DishDetailPage implements OnInit {
         private activatedRoute: ActivatedRoute,
         private favoriteService: FavoriteService,
         public toastController: ToastController,
+        public actionSheetController: ActionSheetController,
         @Inject( 'BaseURL' ) public BaseURL            // Mechanism for letting Angular know that a parameter must be injected
     ) { 
         console .log( 'BaseURL', this .BaseURL );
@@ -67,6 +68,41 @@ export class DishDetailPage implements OnInit {
         });
 
         toast .present();
+    }
+
+    async showActionSheet() {
+        const actionSheet = await this .actionSheetController .create({
+            header: 'Select Actions',
+            cssClass: 'ion-action-sheet',
+            buttons: [
+                {
+                    text: 'Add to Favorites',
+                    icon: 'heart',
+                    handler: () => {
+                        console .log( 'Play clicked' );
+                        this .addToFavorites();
+                    }
+                }, 
+                {
+                    text: 'Add Comment',
+                    icon: 'chatbox-ellipses-outline',
+                    handler: () => {
+                        console .log( 'Favorite clicked' );
+                    }
+                }, 
+                {
+                    text: 'Cancel',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+                        console .log( 'Cancel clicked' );
+                    }
+                }
+            ]
+        });
+
+        await actionSheet .present();
+
     }
 
 }
