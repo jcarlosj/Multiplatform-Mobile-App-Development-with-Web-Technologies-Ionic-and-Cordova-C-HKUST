@@ -9,4 +9,42 @@
 
 <ion-content [fullscreen]="true">
 
+    <form novalidate
+        #commentForm="ngForm"
+        [formGroup]="dishCommentForm"
+        (ngSubmit)="onSubmit()"
+    >
+        <ion-item>
+            <ion-label position="floating">Your Name</ion-label>
+            <ion-input formControlName="author"></ion-input>
+            <ion-text class="error" *ngIf="formErrors .author">
+                {{ formErrors .author }}
+            </ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-range 
+                min="0" 
+                max="5" 
+                snaps="true" 
+                ticks="false"
+                formControlName="rating"
+            >
+                <ion-icon size="small" slot="start" name="sad-outline"></ion-icon>
+                <ion-icon slot="end" name="happy-outline"></ion-icon>
+            </ion-range>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Your Comment</ion-label>
+            <ion-textarea formControlName="comment"></ion-textarea>
+            <ion-text class="error" *ngIf="formErrors .comment">
+                {{ formErrors .comment }}
+            </ion-text>
+        </ion-item>
+        <ion-button 
+            type="submit"
+            [disabled]="! dishCommentForm .valid"
+        >Comment</ion-button>
+
+    </form>
+
 </ion-content>
