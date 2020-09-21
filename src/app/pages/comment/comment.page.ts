@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ModalController } from '@ionic/angular';
 
+/** Model */
+import { Comment } from '../../shared/interfaces/Comment';
+
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.page.html',
@@ -113,6 +116,8 @@ export class CommentPage implements OnInit {
 
         console .log( 'this.dishCommentForm', this .dishCommentForm );
         console .log( 'Sent', this .dishComment );
+
+        this .modalController .dismiss( this .dishComment );        //  Returns data from the comment to the component that launched the modal
 
         this .dishCommentForm .reset({
             author: '',
