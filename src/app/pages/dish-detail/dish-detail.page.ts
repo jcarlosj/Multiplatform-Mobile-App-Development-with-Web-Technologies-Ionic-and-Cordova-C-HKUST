@@ -8,9 +8,11 @@ import { CommentPage } from '../comment/comment.page';
 
 /** Models */
 import { Dish } from '../../shared/interfaces/Dish';
+import { Comment } from '../../shared/interfaces/Comment';
 
 /** Services */
 import { FavoriteService } from '../../services/favorite.service';
+import { DishService } from '../../services/dish.service';
 
 /** ReactiveX Library */
 import { map } from 'rxjs/operators';
@@ -23,6 +25,8 @@ import { map } from 'rxjs/operators';
 export class DishDetailPage implements OnInit {
     /** Atributes */
     dish: Dish;
+    dishCopy: Dish;
+    newComment: Comment;
     errorMessage: string;
     avgStars: string;
     numComments: number;
@@ -31,6 +35,7 @@ export class DishDetailPage implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private favoriteService: FavoriteService,
+        private dishService: DishService,
         public toastController: ToastController,
         public actionSheetController: ActionSheetController,
         private modalController: ModalController,
@@ -53,6 +58,7 @@ export class DishDetailPage implements OnInit {
     ngOnInit() {
         let total = 0;
 
+        this .dishCopy = this .dish;
         this .dish .comments .forEach( comment => total += comment .rating );   //  Add the total rating per dish comment 
         this .numComments = this .dish .comments .length;                       //  Count number of total comments of the dish
         this .avgStars = ( total / this .numComments ) .toFixed( 2 );           //  Calculate the average rating of the dish
@@ -118,6 +124,28 @@ export class DishDetailPage implements OnInit {
         });
 
         await modal .present();
+        const { data } = await modal .onDidDismiss();
+
+        this .dishCopy .comments .push( data );             // Add Comment
+
+        let total = 0;
+
+        this .dishCopy .comments .forEach( comment => total += comment .rating );   //  Add the total rating per dish comment 
+        this .numComments = this .dishCopy .comments .length;                       //  Count number of total comments of the dish
+        this .avgStars = ( total / this .numComments ) .toFixed( 2 );               //  Calculate the average rating of the dish
+
+        this .dishService .putDish( this .dishCopy )        // Submit modifications
+             .subscribe(
+                  dish => {
+                      this .dish = dish;
+                      this .dishCopy = dish;
+                  },
+                  error => {
+                      this .dish = null;
+                      this .dishCopy = null;
+                      this .errorMessage = <any>error
+                  }
+             );
     }
 
 }
