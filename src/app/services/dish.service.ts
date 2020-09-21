@@ -46,5 +46,17 @@ export class DishService {
                     )
                     .pipe( catchError( this .processHttpMessageService .handleError ) );    // Handle the error and extract the message
     }
+
+    /** Modify a dish */
+    putDish( dish: Dish ): Observable< Dish > {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this .http .put< Dish >( `${ BASE_URL }dishes/${ dish .id }`, dish, httpOptions )
+                    .pipe( catchError( this .processHttpMessageService .handleError ) );  // Handle the error and extract the message
+    }
     
 }
