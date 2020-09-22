@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Platform, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -57,9 +57,11 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private modalController: ModalController
+    private modalController: ModalController,
+    @Inject( 'BaseURL' ) private BaseURL
   ) {
     this.initializeApp();
+    console .log( 'BaseURL', this .BaseURL );
   }
 
   initializeApp() {

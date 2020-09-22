@@ -17,9 +17,9 @@ ion-menu.md ion-note {
   margin-bottom: 30px;
 }
 
-ion-menu.md ion-list-header,
+ion-menu.md ion-list-header, 
 ion-menu.md ion-note {
-  padding-left: 10px;
+  padding-left: 0;
 }
 
 ion-menu.md ion-list#inbox-list {
@@ -99,8 +99,8 @@ ion-menu.ios ion-list#labels-list ion-list-header {
 
 ion-menu.ios ion-list-header,
 ion-menu.ios ion-note {
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 ion-menu.ios ion-note {
