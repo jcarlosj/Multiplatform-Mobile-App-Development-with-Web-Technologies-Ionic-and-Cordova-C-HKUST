@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 /** Components */
 import { ReservationPage } from './pages/reservation/reservation.page';
+import { LoginPage } from './pages/login/login.page';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +47,12 @@ export class AppComponent implements OnInit {
       type: 'modal'
     },
     {
+        title: 'Login',
+        url: 'modal-login',
+        icon: 'log-in',
+        type: 'modal'
+      },
+    {
       title: 'Contact Us',
       url: '/contact',
       icon: 'mail',
@@ -82,6 +89,15 @@ export class AppComponent implements OnInit {
     
   }
 
+    openModal( url: string ) {
+        if( url === 'modal-reservation' ) {
+            this .openModalReservation();
+        }
+        if( url === 'modal-login' ) {
+            this .openModalLogin();
+        }
+    }
+
     async openModalReservation() {
         console .log( 'openModalReservation' );
 
@@ -91,4 +107,15 @@ export class AppComponent implements OnInit {
 
         await modal .present();
     }
+
+    async openModalLogin() {
+        console .log( 'openModalLogin' );
+
+        const modal = await this .modalController .create({
+            component: LoginPage
+        });
+
+        await modal .present();
+    }
+
 }

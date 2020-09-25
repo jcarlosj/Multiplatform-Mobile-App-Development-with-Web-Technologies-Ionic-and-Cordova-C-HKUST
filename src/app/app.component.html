@@ -22,11 +22,14 @@
                 <ion-label>{{ p.title }}</ion-label>
             </ion-item>
             <ng-template #elseModal>
-                <ion-item (click)="openModalReservation()" class="modal">
+
+                <ion-item (click)="openModal( p.url )" class="modal">
                     <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                     <ion-label>{{ p.title }}</ion-label>
-                  </ion-item>
+                </ion-item>                
+
             </ng-template>
+
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
