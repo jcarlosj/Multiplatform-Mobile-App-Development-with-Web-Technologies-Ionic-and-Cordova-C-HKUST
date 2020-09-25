@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ModalController } from '@ionic/angular';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+    constructor(
+        private modalController: ModalController
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+
+    dismissModal() {
+        this .modalController .dismiss();
+    }
 
 }
