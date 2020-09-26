@@ -10,6 +10,7 @@
 <ion-content [fullscreen]="true">
 
     <form novalidate
+        #loginForm="ngForm"
         [formGroup]="logInForm"
         (ngSubmit)="onSubmit()"
     >
@@ -25,6 +26,9 @@
                 type="text"
                 formControlName="username"
             ></ion-input>
+            <ion-text class="error" *ngIf="formErrors .username">
+                {{ formErrors .username }}
+            </ion-text>
         </ion-item>
         <ion-item>
             <ion-label position="floating">Password</ion-label>
@@ -32,6 +36,9 @@
                 type="password"
                 formControlName="password"
             ></ion-input>
+            <ion-text class="error" *ngIf="formErrors .password">
+                {{ formErrors .password }}
+            </ion-text>
         </ion-item>
         <ion-item>
             <ion-checkbox

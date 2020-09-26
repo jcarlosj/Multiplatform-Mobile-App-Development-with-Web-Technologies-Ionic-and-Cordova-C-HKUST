@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ModalController } from '@ionic/angular';
@@ -15,6 +15,28 @@ export class LoginPage implements OnInit {
     /** Atributes */
     logInForm: FormGroup;
     logIn: Login = { username: '', password: '' };
+
+    // It will contain the error messages to display for each field of the form defined here
+    formErrors = {
+        'username': '',
+        'password': ''
+    };
+    // It will contain the messages for each type of expected error per form field
+    validationsMessages = {
+        'username': {
+            'required': 'Username is required',
+            'minlength': 'Username must be at least 4 characters long',
+            'maxlength': 'Username must be less than 30 characters',
+            'pattern': 'Username must have characters from A to Z and underscores'
+        },
+        'password': {
+            'required': 'Password is required',
+            'minlength': 'Password must be at least 8 characters long',
+            'pattern': 'Password must have numbers, characters from A to Z (lowercase or uppercase) and only the following signs @ . # * $ ! ? & + - /'
+        }
+    };
+
+    @ViewChild( 'loginForm' ) logInFormDirective;
 
     constructor(
         private modalController: ModalController,
@@ -49,7 +71,47 @@ export class LoginPage implements OnInit {
 
         /** Observable: Subscribe to the Angular Form observable named valueChanges */
         this .logInForm .valueChanges
-             .subscribe( data => console .log( data ) );
+             .subscribe( data => {
+                console .log( data );
+                this .onValueChanged( data );
+            });
+    }
+
+    /** Method that validates when the value of a form field has changed  */
+    onValueChanged( data?: any ) {
+        // Validate if feedBackForm has NOT been created
+        if( !this .logInForm ) {
+            return;
+        }
+
+        const form = this .logInForm;
+        // console .log( 'this.feedBackForm', form );
+
+        // Loops through form fields defined in formErrors
+        for( const field in this .formErrors ) {
+            if( this .formErrors .hasOwnProperty( field ) ) {
+                // Clear previous error message (if any)
+                this .formErrors[ field ] = '';
+
+                const control = form .get( field );
+                // console .log( 'control', control );
+
+                // Validate if it has a value, if the value of the field has changed, if the value is not valid
+                if( control && control .dirty && !control .valid ) {
+                    const messages = this .validationsMessages[ field ];     // Assign error message to the respective field
+                    console .log( 'messages', messages );
+
+                    for( const key in control .errors ) {
+                        if( control .errors .hasOwnProperty( key ) ) {
+                            this .formErrors[ field ] = messages[ key ] + ' ';
+                        }
+                    }
+                }
+            }
+        }
+
+        console .log( 'this.formErrors', this .formErrors );
+        
     }
 
     onSubmit() {
@@ -57,7 +119,7 @@ export class LoginPage implements OnInit {
 
         console .log( 'this.dishCommentForm', this .logInForm );
         console .log( 'Sent', this .logIn );
-        //this .modalController .dismiss( this .logInForm .value );        //  Returns data from the comment to the component that launched the modal
+        this .modalController .dismiss( this .logInForm .value );        //  Returns data from the comment to the component that launched the modal
 
         this .logInForm .reset({
             username: '',
