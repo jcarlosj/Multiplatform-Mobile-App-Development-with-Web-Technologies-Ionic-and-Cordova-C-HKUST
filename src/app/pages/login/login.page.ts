@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 /** Model */
 import { Login } from '../../shared/interfaces/Login';
@@ -40,8 +41,10 @@ export class LoginPage implements OnInit {
 
     constructor(
         private modalController: ModalController,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private storage: Storage
     ) { 
+        this .verifyStorage();
         this .createForm();
     }
 
@@ -50,6 +53,30 @@ export class LoginPage implements OnInit {
 
     dismissModal() {
         this .modalController .dismiss();
+    }
+
+    private verifyStorage() {
+
+        this .storage 
+             .get( 'UserLoggedIn' )     //  Get data stored in the browser
+             .then( user => {
+            
+                /** Validates if there is stored user data */
+                if( user ) {
+                    console .log( user );
+                    this .logIn = user;
+                
+                    /** patchValue() method to replace any properties defined in the object that have changed in the form model. */
+                    this .logInForm .patchValue({
+                        'username': this .logIn .username, 
+                        'password': this .logIn .password 
+                    });
+                }
+                else {
+                    console .log( 'User not defined' );
+                }
+                
+        });
     }
 
     private createForm() {
@@ -119,6 +146,20 @@ export class LoginPage implements OnInit {
 
         console .log( 'this.dishCommentForm', this .logInForm );
         console .log( 'Sent', this .logIn );
+
+        /** Assign the values of the reactive form to an object */
+        this .logIn .username = this .logInForm .get( 'username' ) .value;
+        this .logIn .password = this .logInForm .get( 'password' ) .value;
+
+        /** Check if the remember field has been selected */
+        if( this .logInForm .get( 'remember' ) .value ) {
+            this .storage .set( 'UserLoggedIn', this .logIn );      //  Modify data stored in the browser
+        }      
+        else {
+            this .storage .remove( 'UserLoggedIn' );                //  Delete data stored in the browser
+        }
+      
+
         this .modalController .dismiss( this .logInForm .value );        //  Returns data from the comment to the component that launched the modal
 
         this .logInForm .reset({
