@@ -110,7 +110,6 @@ export class AppComponent implements OnInit {
 
     async openModalLogin() {
         console .log( 'openModalLogin' );
-
         const modal = await this .modalController .create({
             component: LoginPage
         });

@@ -8,11 +8,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: '**',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
     path: 'about',
     loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
   },
@@ -36,9 +31,13 @@ const routes: Routes = [
     path: 'favorites',
     loadChildren: () => import('./pages/favorites/favorites.module').then( m => m.FavoritesPageModule)
   },
-  {
+  { /** Do not remove routing if the component works as a Modal Component that will display a reactive form */
     path: 'comment',
     loadChildren: () => import('./pages/comment/comment.module').then( m => m.CommentPageModule)
+  },
+  { /** Do not remove routing if the component works as a Modal Component that will display a reactive form */
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   }
 ];
 

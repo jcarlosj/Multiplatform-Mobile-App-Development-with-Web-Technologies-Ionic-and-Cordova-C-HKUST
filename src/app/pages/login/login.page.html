@@ -2,32 +2,48 @@
     <ion-toolbar>
         <ion-title>Login</ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="dismissModal()">Close</ion-button>
+            <ion-button (click)="dismissModal()" >Close</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-    <form novalidate>
+    <form novalidate
+        [formGroup]="logInForm"
+        (ngSubmit)="onSubmit()"
+    >
+
+        <ion-item>
+            <ion-text>
+                <code>{{ logInForm .status }}</code>
+            </ion-text>
+        </ion-item>
         <ion-item>
             <ion-label position="floating">Username</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input 
+                type="text"
+                formControlName="username"
+            ></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">Password</ion-label>
-            <ion-input type="password"></ion-input>
+            <ion-input 
+                type="password"
+                formControlName="password"
+            ></ion-input>
         </ion-item>
         <ion-item>
             <ion-checkbox
                 color="primary"
-                checked="true"
+                formControlName="remember"
             ></ion-checkbox>
             <ion-label>Remember me</ion-label>
         </ion-item>
         
         <ion-button 
             type="submit"
+            [disabled]="! logInForm .valid"
         >Login</ion-button>
 
     </form>
