@@ -1,80 +1,104 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-/** Models */
-import { Dish } from '../shared/interfaces/Dish';
+import { Storage } from '@ionic/storage';
 
 /** Services */
 import { DishService } from '../services/dish.service';
-
-/** ReactiveX Library */
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-/** Static Data */
-import { FAVORITES } from '../shared/data/favorites';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoriteService {
     /** Atributes */
-    favorites: Array<any> = null;
+    favorites: Array<number> = [];
 
     constructor(
-        private http: HttpClient,
-        private dishService: DishService
+        private dishService: DishService,
+        private storage: Storage
     ) { 
-        console .log( 'Hello FavoriteService Service', this .favorites );
-        
-
-        this .getIdsFavoriteDishes() 
-            .subscribe( data => {
-                this .favorites = data;
-            });
-
-        console .log( 'Hello FavoriteService Service', this .favorites );
+        this .checkStorage() .then( data => {
+            this .favorites = data;
+            console .log( 'this.favorites', this .favorites );
+        });
     }
 
-    /** Get IDs of favorite dishes */
-    getIdsFavoriteDishes(): Observable< number[] > {
-        return of( FAVORITES );     // Create an Observable: Converts the arguments to an observable sequence.
+    /** check if there is data in the storage */
+    public async checkStorage() {
+
+        const 
+            ids: number[] = await this .getStorage( 'favorites' ) 
+                .then( data => {
+                    let idsFavs;
+                    console .log( 'data', data );
+
+                    if( ! data || data .length === 0 ) {
+                        idsFavs = [];
+                        this .favorites = [];
+                        console .log( 'No data in Storage', idsFavs );
+                    }
+                    else {
+                        idsFavs = data;
+                        this .favorites = data;
+                        console .log( 'Storage data', idsFavs );
+                    }
+                    console .log( 'getStorage', idsFavs );
+
+                    return idsFavs;
+                });
+
+        console .log( 'checkStorage', ids );
+        
+        return ids;
+    }
+
+    public setStorage( settingName, value ){
+        return this .storage .set( `conFusion:${ settingName }`, value );
+    }
+
+    public async getStorage( settingName ){
+        return await this .storage .get( `conFusion:${ settingName }` );
+    }
+
+    public async removeStorage( settingName ){
+        return await this .storage .remove( `conFusion:${ settingName }` );
+    }
+
+    public clearStorage() {
+        this .storage .clear() .then(() => {
+            console .log( 'all keys cleared' );
+        });
     }
 
     /** Add a Favorite Dish */
     addFavorite( id: number ): boolean {
         if( ! this .isFavorite( id ) ) {
             this .favorites .push( id );
+            this .setStorage( 'favorites', this .favorites );
+            console .log( 'addFavorite', this .favorites );
         }
-        console .log( 'addFavorite', this .favorites );
 
         return true;
     }
 
     /** Check if the dish ID is favorite */
     isFavorite( id: number ): boolean {
+        console .log( 'isFavorite', this .favorites );
         return this .favorites .some( indexValue => indexValue === id );        //  Checks if at least one element of the array meets the condition
     }
 
-    /** Gets all the favorite dishes */
-    getFavorites() {
-        return this .dishService .getDishes()
-                .pipe(
-                    map( dishes => dishes .filter( dish => this .isFavorite( dish .id ) ) )     //  Map each registered dish and filter the first one that has an id included in the list of favorite dishes
-                );
-    }
-
     /** Remove an ID from the list of favorite dishes */
-    deleteFavorite( id: number ): Observable< Dish[] > {
+    async deleteFavorite( id: number ): Promise<boolean | number[]> {
         let index = this .favorites .indexOf( id );     //  Returns the first index at which a given element can be found
 
         if( index >= 0 ) {
-            this .favorites .splice( index, 1 );        //  Remove an element from the "index" index of the Favorites Array
-            return this .getFavorites();
+            await this .favorites .splice( index, 1 );        //  Remove an element from the "index" index of the Favorites Array
+            await this .setStorage( 'favorites', this .favorites );
+            console .info( 'favorites', this .favorites );
+            return this .checkStorage();
         }
         else {
             console .log( 'Deleting non-existant favorite', id );
-            return Observable .throw( `Deleting non-existant favorite ${ id }` );
+            return false;
         }
     }
 

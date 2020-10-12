@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ToastController, LoadingController, AlertController } from '@ionic/angular';
@@ -8,38 +8,66 @@ import { Dish } from '../../shared/interfaces/Dish';
 
 /** Services */
 import { FavoriteService } from '../../services/favorite.service';
+import { DishService } from '../../services/dish.service';
+
+/** ReactiveX Library */
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.page.html',
   styleUrls: ['./favorites.page.scss'],
 })
-export class FavoritesPage implements OnInit {
+export class FavoritesPage {
     /** Atributes */
-    favorites: Dish[];
+    favorites: Dish[] = [];
+    idsFavorites: number[] = [];
     errorMessage: string;
 
     constructor(
         private router: Router,
         private favoriteService: FavoriteService,
+        private dishService: DishService,
         public toastController: ToastController,   
         public loadingController: LoadingController,  
         public alertController: AlertController,   
         @Inject( 'BaseURL' ) private BaseURL
     ) { 
         console .log( 'BaseURL', this .BaseURL );
+        this .checkDataToDisplay();
     }
 
-    ngOnInit() {
-        this .favoriteService .getFavorites()
-                .subscribe(
-                    favorites => { 
-                        this .favorites = favorites
-                        console .log( 'Favorite Dishes', this .favorites );
-                    },
-                    error => this .errorMessage = <any> error
-                );
-               
+    async checkDataToDisplay() {
+        await this .getIdsFavoriteDishes();
+        await this .getFavoriteDishes();
+    }
+
+    /** Gets all the favorite dishes */
+    getIdsFavoriteDishes() {
+
+        this .favoriteService 
+            .checkStorage()
+            .then( data => {
+                console .log( 'Ids', data );
+                this .idsFavorites = data;
+            });
+    }
+    
+    getFavoriteDishes() {
+
+        this .dishService 
+            .getDishes()
+            .pipe(
+                map( dishes => {
+                    console .log( 'Dishes', dishes );
+                    return dishes .filter( dish => this .idsFavorites .some( indexValue => indexValue == dish .id ) );
+                })     //  Map each registered dish and filter the first one that has an id included in the list of favorite dishes
+            )
+            .subscribe( data => {
+                console .log( 'getIdsFavoriteDishes', data );
+                this .favorites = data;
+            });
+
     }
 
     async deleteFavorite( id: number ) {
@@ -80,18 +108,14 @@ export class FavoritesPage implements OnInit {
                         });
 
                         /** Using the Service to remove a dish from the favorites list */
-                        this .favoriteService .deleteFavorite( id )
-                                .subscribe( 
-                                    favorites => {
-                                        this .favorites = favorites;
-                                        loading .dismiss();
-                                        toast .present();
-                                    },
-                                    error => {
-                                        this .errorMessage = error;
-                                        loading .dismiss();
-                                    } 
-                                );
+                        this .favoriteService 
+                            .deleteFavorite( id ) 
+                            .then( data => {
+                                if( data ) {
+                                    console .log( 'deleteFavorite', data );
+                                    this .checkDataToDisplay();
+                                }
+                            });
 
                     }   // handler
                 }
