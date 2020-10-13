@@ -1,5 +1,8 @@
 {
   "name": "conFusion",
-  "integrations": {},
-  "type": "angular"
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "id": "conFusion-34325435"
 }
